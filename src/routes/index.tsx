@@ -53,7 +53,7 @@ function Section({
   title?: string;
   children: React.ReactNode;
   className?: string;
-  sectionRef?: React.RefObject<HTMLElement>;
+  sectionRef?: React.RefObject<HTMLElement | null>;
 }) {
   return (
     <section
