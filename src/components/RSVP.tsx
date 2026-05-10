@@ -4,13 +4,12 @@ import { WEDDING_CONFIG } from "@/config/constants";
 
 // Google Sheets Web App URL from environment
 const GOOGLE_SHEETS_URL = import.meta.env.DEV
-  ? '/api/rsvp'
-  : (import.meta.env.VITE_GOOGLE_SCRIPT_URL || '');
+  ? "/api/rsvp"
+  : import.meta.env.VITE_GOOGLE_SCRIPT_URL || "";
 
-
-// TypeScript interfaces for type safety
 interface RSVPData {
   name: string;
+  phone: string;
   members: number;
   attend: string[];
   note: string;
@@ -34,7 +33,7 @@ const EVENTS = WEDDING_CONFIG.rsvpEvents;
 export function RSVP() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [members, setMembers] = useState(1);
+  const [members, setMembers] = useState(""); // changed from number to string
   const [attend, setAttend] = useState<string[]>(["wedding"]);
   const [note, setNote] = useState("");
   const [sent, setSent] = useState(false);
@@ -45,11 +44,13 @@ export function RSVP() {
   const toggle = (id: string) =>
     setAttend((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]));
 
+  const parsedMembers = members === "" ? NaN : Number(members);
+
   const validateForm = (): ValidationError | null => {
     const trimmedName = name.trim();
     const trimmedNote = note.trim();
+    const trimmedPhone = phone.trim();
 
-    // Validate name - prevent empty and whitespace-only
     if (!trimmedName) {
       return { field: "name", message: "Please tell us your name" };
     }
@@ -59,31 +60,28 @@ export function RSVP() {
     if (trimmedName.length > WEDDING_CONFIG.validation.name.maxLength) {
       return { field: "name", message: "Name is too long (max 100 characters)" };
     }
-    // Prevent numbers-only names
     if (/^\d+$/.test(trimmedName)) {
       return { field: "name", message: "Please enter a valid name" };
     }
 
-    // Validate phone - optional but if entered must be reasonable
-    const trimmedPhone = phone.trim();
     if (trimmedPhone && !/^[+\d\s\-()]{7,15}$/.test(trimmedPhone)) {
       return { field: "phone", message: "Please enter a valid phone number" };
     }
 
-    // Validate members - prevent invalid numbers
-    if (!Number.isInteger(members) || members < WEDDING_CONFIG.validation.members.min) {
+    if (!Number.isInteger(parsedMembers)) {
+      return { field: "members", message: "Please enter number of family members" };
+    }
+    if (parsedMembers < WEDDING_CONFIG.validation.members.min) {
       return { field: "members", message: "At least 1 member is required" };
     }
-    if (members > WEDDING_CONFIG.validation.members.max) {
+    if (parsedMembers > WEDDING_CONFIG.validation.members.max) {
       return { field: "members", message: "Maximum 20 members allowed" };
     }
 
-    // Validate note - prevent huge payloads
     if (trimmedNote.length > WEDDING_CONFIG.validation.note.maxLength) {
       return { field: "note", message: "Message is too long (max 500 characters)" };
     }
 
-    // Validate at least one event selected
     if (attend.length === 0) {
       return { field: "attend", message: "Please select at least one event" };
     }
@@ -94,13 +92,11 @@ export function RSVP() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Honeypot spam protection - check hidden field
-    const website = (document.querySelector('input[name="website"]') as HTMLInputElement)?.value;
-    if (website) {
-      return; // Silent reject for bots
-    }
+    const website = (
+      document.querySelector('input[name="website"]') as HTMLInputElement
+    )?.value;
+    if (website) return;
 
-    // Submit cooldown - prevent rapid repeated submissions (10 seconds)
     const now = Date.now();
     if (now - lastSubmit < 10000) {
       toast.error("Please wait before submitting again");
@@ -108,42 +104,41 @@ export function RSVP() {
     }
     setLastSubmit(now);
 
-    // Validate form
     const validationError = validateForm();
     if (validationError) {
       toast.error(validationError.message);
       return;
     }
 
-    // Check if Google Sheets URL is configured
     if (!GOOGLE_SHEETS_URL) {
       toast.error("RSVP service is not configured. Please contact the couple.");
       return;
     }
 
     setLoading(true);
+
     try {
-      // Prepare RSVP data for Google Sheets
       const rsvpData: RSVPData = {
         name: name.trim(),
-        members,
+        phone: phone.trim(),
+        members: Number(members),
         attend,
         note: note.trim(),
         submittedAt: new Date().toISOString(),
         events: EVENTS.filter((ev) => attend.includes(ev.id)).map((ev) => ev.label),
       };
 
-      // Use FormData to avoid CORS preflight requests
       const formData = new FormData();
       formData.append("name", rsvpData.name);
-      formData.append("phone", phone.trim());           // new field
-      formData.append("guests", String(members));        // was "members"
-      formData.append("message", rsvpData.note);         // was "note"
+      formData.append("phone", rsvpData.phone);
+      formData.append("guests", String(rsvpData.members));
+      formData.append("message", rsvpData.note);
       formData.append("submittedAt", rsvpData.submittedAt);
+      formData.append("attend", JSON.stringify(rsvpData.attend));
+      formData.append("events", JSON.stringify(rsvpData.events));
 
-      // Add timeout to prevent hanging requests
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
 
       const response = await fetch(GOOGLE_SHEETS_URL, {
         method: "POST",
@@ -165,10 +160,9 @@ export function RSVP() {
         setSent(true);
         toast.success("RSVP confirmed — see you there!");
 
-        // Reset form
         setName("");
         setPhone("");
-        setMembers(1);
+        setMembers("");
         setAttend(["wedding"]);
         setNote("");
       } else {
@@ -209,7 +203,6 @@ export function RSVP() {
 
   return (
     <form onSubmit={handleSubmit} className="paper rounded-2xl p-6 sm:p-8">
-      {/* Honeypot field for spam protection - hidden from users */}
       <input
         type="text"
         name="website"
@@ -217,6 +210,7 @@ export function RSVP() {
         tabIndex={-1}
         autoComplete="off"
       />
+
       <div className="space-y-5">
         <div>
           <label className="label text-muted-foreground">Your full name</label>
@@ -228,8 +222,11 @@ export function RSVP() {
             className="mt-1 w-full rounded-md border border-border bg-background/60 px-3 py-2 outline-none focus:border-gold"
           />
         </div>
+
         <div>
-          <label className="label text-muted-foreground">Phone number (optional)</label>
+          <label className="label text-muted-foreground">
+            Phone number (optional)
+          </label>
           <input
             type="tel"
             value={phone}
@@ -239,22 +236,44 @@ export function RSVP() {
             className="mt-1 w-full rounded-md border border-border bg-background/60 px-3 py-2 outline-none focus:border-gold"
           />
         </div>
+
         <div>
-          <label className="label text-muted-foreground">Family / Number of members</label>
+          <label className="label text-muted-foreground">
+            Family / Number of members
+          </label>
           <input
             type="number"
             min={WEDDING_CONFIG.validation.members.min}
             max={WEDDING_CONFIG.validation.members.max}
             value={members}
-            onChange={(e) => setMembers(Math.max(1, Math.min(20, Number(e.target.value) || 1)))}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (value === "") {
+                setMembers("");
+                return;
+              }
+
+              if (/^\d+$/.test(value)) {
+                setMembers(value);
+              }
+            }}
+            placeholder="Enter number of family members"
+            aria-label="Number of family members"
             className="mt-1 w-full rounded-md border border-border bg-background/60 px-3 py-2 outline-none focus:border-gold"
           />
         </div>
+
         <div>
-          <label className="label text-muted-foreground">Events you will join</label>
+          <label className="label text-muted-foreground">
+            Events you will join
+          </label>
           <div className="mt-2 space-y-2">
             {EVENTS.map((ev) => (
-              <label key={ev.id} className="flex cursor-pointer items-center gap-3 rounded-md border border-border/60 bg-background/40 px-3 py-2 hover:border-gold">
+              <label
+                key={ev.id}
+                className="flex cursor-pointer items-center gap-3 rounded-md border border-border/60 bg-background/40 px-3 py-2 hover:border-gold"
+              >
                 <input
                   type="checkbox"
                   checked={attend.includes(ev.id)}
@@ -266,16 +285,19 @@ export function RSVP() {
             ))}
           </div>
         </div>
+
         <div>
           <label className="label text-muted-foreground block">
             Message & blessings (optional)
           </label>
-          <p className="text-xs text-muted-foreground/60 ml-2 mb-1">
+          <p className="ml-2 mb-1 text-xs text-muted-foreground/60">
             {note.trim().length}/{WEDDING_CONFIG.validation.note.maxLength}
           </p>
           <textarea
             value={note}
-            onChange={(e) => setNote(e.target.value.slice(0, WEDDING_CONFIG.validation.note.maxLength))}
+            onChange={(e) =>
+              setNote(e.target.value.slice(0, WEDDING_CONFIG.validation.note.maxLength))
+            }
             rows={3}
             placeholder="Send your warmest wishes to the couple..."
             aria-label="Blessings message for the couple"
@@ -283,12 +305,15 @@ export function RSVP() {
             className="mt-1 w-full rounded-md border border-border bg-background/60 px-3 py-2 outline-none focus:border-gold"
           />
         </div>
+
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-full bg-primary py-3 text-primary-foreground transition hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-2 inline-flex w-full items-center justify-center border-1 rounded-full bg-primary px-6 py-3.5 text-sm font-medium tracking-wide text-black shadow-md transition-colors duration-300 hover:bg-gold hover:text-primary focus:outline-none focus:ring-2 focus:ring-gold/60 focus:ring-offset-2 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary"
         >
-          <span className="label">{loading ? "Submitting..." : "Confirm RSVP"}</span>
+          <span className="label">
+            {loading ? "Submitting..." : "Confirm RSVP"}
+          </span>
         </button>
       </div>
     </form>

@@ -97,9 +97,13 @@
 
 .script { font-family: var(--font-display); }
 .serif { font-family: var(--font-serif); }
-.label { font-family: var(--font-sans); letter-spacing: 0.3em; text-transform: uppercase; font-size: 0.7rem; }
+.label { font-family: var(--font-sans); 
+  letter-spacing: 0.3em; 
+  text-transform: uppercase; font-size: 0.7rem; }
 
 .gold-text { background: var(--gradient-gold); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+
 
 .paper {
   background:

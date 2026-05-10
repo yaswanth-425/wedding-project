@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EnvelopeCover } from "@/components/EnvelopeCover";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -27,7 +27,14 @@ import weddingImg from "../assets/images/wedding.png";
 import receptionImg from "../assets/images/reception.png";
 import ganeshImg from "../assets/images/ganesh.png";
 
-const galleryImages = [couplePhoto1, couplePhoto2,couplePhoto3,couplePhoto4,couplePhoto5,couplePhoto6];
+const galleryImages = [
+  couplePhoto1,
+  couplePhoto2,
+  couplePhoto3,
+  couplePhoto4,
+  couplePhoto5,
+  couplePhoto6,
+];
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -39,15 +46,21 @@ function Section({
   title,
   children,
   className = "",
+  sectionRef,
 }: {
   id?: string;
   eyebrow?: string;
   title?: string;
   children: React.ReactNode;
   className?: string;
+  sectionRef?: React.RefObject<HTMLElement>;
 }) {
   return (
-    <section id={id} className={`mx-auto w-full max-w-2xl px-5 py-20 ${className}`}>
+    <section
+      ref={sectionRef}
+      id={id}
+      className={`mx-auto w-full max-w-2xl px-5 py-20 ${className}`}
+    >
       {eyebrow && <p className="label text-center text-gold">{eyebrow}</p>}
       {title && (
         <h2 className="script mt-2 text-center text-5xl text-primary sm:text-6xl">
@@ -70,6 +83,7 @@ function CeremonyCard({
   venue,
   accent,
   image,
+  forceReveal,
 }: {
   day: string;
   name: string;
@@ -78,6 +92,7 @@ function CeremonyCard({
   venue: string;
   accent: string;
   image: string;
+  forceReveal: boolean;
 }) {
   return (
     <article
@@ -88,7 +103,11 @@ function CeremonyCard({
         src={image}
         alt={name}
         loading="lazy"
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110"
+        className={`absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out ${
+          forceReveal
+            ? "scale-110"
+            : "group-hover:scale-110 group-focus-visible:scale-110"
+        }`}
       />
 
       <div
@@ -115,11 +134,23 @@ function CeremonyCard({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-10 p-6 sm:p-7">
-        <div className="transition-all duration-500 ease-out group-hover:-translate-y-28 group-focus-visible:-translate-y-28">
+        <div
+          className={`transition-all duration-500 ease-out ${
+            forceReveal
+              ? "-translate-y-28"
+              : "group-hover:-translate-y-28 group-focus-visible:-translate-y-28"
+          }`}
+        >
           <h3 className="script text-4xl text-white sm:text-5xl">{name}</h3>
         </div>
 
-        <div className="pointer-events-none mt-5 translate-y-10 opacity-0 transition-all duration-500 ease-out group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:pointer-events-auto group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+        <div
+          className={`mt-5 transition-all duration-500 ease-out ${
+            forceReveal
+              ? "translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-10 opacity-0 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:pointer-events-auto group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+          }`}
+        >
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md">
               <p className="label text-white/70">Date</p>
@@ -144,7 +175,11 @@ function CeremonyCard({
 
 function Index() {
   const [opened, setOpened] = useState(false);
+  const [showCeremonyDetails, setShowCeremonyDetails] = useState(false);
+
   const musicRef = useRef<BackgroundMusicHandle>(null);
+  const ceremoniesRef = useRef<HTMLElement>(null);
+  const revealTimerRef = useRef<number | null>(null);
 
   const ceremonyImages = {
     Mehendi: mehendiImg,
@@ -152,6 +187,32 @@ function Index() {
     Wedding: weddingImg,
     Reception: receptionImg,
   } as const;
+
+  useEffect(() => {
+    const node = ceremoniesRef.current;
+    if (!node || showCeremonyDetails) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !revealTimerRef.current) {
+          revealTimerRef.current = window.setTimeout(() => {
+            setShowCeremonyDetails(true);
+          }, 15000);
+        }
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+      if (revealTimerRef.current) {
+        clearTimeout(revealTimerRef.current);
+        revealTimerRef.current = null;
+      }
+    };
+  }, [showCeremonyDetails]);
 
   return (
     <main className="relative min-h-screen overflow-hidden">
@@ -166,9 +227,11 @@ function Index() {
         </>
       )}
 
-      <section className="relative mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 py-24 text-center">
+      <section className="relative mx-auto flex min-h-screen w-full max-w-2xl flex-col items-center justify-center px-6 py-6 text-center">
         <div className="flourish">
-          <img src={ganeshImg} alt="ganesh icon" className="icon"/></div>
+          <img src={ganeshImg} alt="ganesh icon" className="icon" />
+        </div>
+
         <p className="serif mt-6 max-w-md text-lg italic text-muted-foreground">
           "They alone are called husband and wife, who have one soul in two bodies."
         </p>
@@ -203,19 +266,34 @@ function Index() {
           </a>
 
           <nav className="flex flex-wrap justify-center gap-4 text-xs">
-            <a href="#save" className="label text-muted-foreground transition-colors hover:text-primary">
+            <a
+              href="#save"
+              className="label text-muted-foreground transition-colors hover:text-primary"
+            >
               Save the Date
             </a>
-            <a href="#story" className="label text-muted-foreground transition-colors hover:text-primary">
+            <a
+              href="#story"
+              className="label text-muted-foreground transition-colors hover:text-primary"
+            >
               Our Story
             </a>
-            <a href="#ceremonies" className="label text-muted-foreground transition-colors hover:text-primary">
+            <a
+              href="#ceremonies"
+              className="label text-muted-foreground transition-colors hover:text-primary"
+            >
               Ceremonies
             </a>
-            <a href="#location" className="label text-muted-foreground transition-colors hover:text-primary">
+            <a
+              href="#location"
+              className="label text-muted-foreground transition-colors hover:text-primary"
+            >
               Location
             </a>
-            <a href="#rsvp" className="label text-muted-foreground transition-colors hover:text-primary">
+            <a
+              href="#rsvp"
+              className="label text-muted-foreground transition-colors hover:text-primary"
+            >
               RSVP
             </a>
           </nav>
@@ -240,7 +318,9 @@ function Index() {
             ].map((d) => (
               <div key={d.l}>
                 <p className="label text-muted-foreground">{d.l}</p>
-                <p className="script text-5xl text-primary sm:text-6xl">{d.v}</p>
+                <p className="script text-5xl text-primary sm:text-6xl">
+                  {d.v}
+                </p>
               </div>
             ))}
           </div>
@@ -248,7 +328,9 @@ function Index() {
         </DateScratchCard>
 
         <div className="mt-10">
-          <p className="label mb-3 text-center text-gold">Counting down to the wedding</p>
+          <p className="label mb-3 text-center text-gold">
+            Counting down to the wedding
+          </p>
           <MultiCountdownScratch weddingDate={WEDDING_CONFIG.weddingDate} />
         </div>
       </Section>
@@ -288,8 +370,13 @@ function Index() {
         </div>
       </Section>
 
-      <Section id="ceremonies" eyebrow="The Festivities" title="Sacred Ceremonies">
-        <div className="space-y-5 ">
+      <Section
+        id="ceremonies"
+        eyebrow="The Festivities"
+        title="Sacred Ceremonies"
+        sectionRef={ceremoniesRef}
+      >
+        <div className="space-y-5">
           {WEDDING_CONFIG.ceremonies.map((ceremony) => (
             <CeremonyCard
               key={ceremony.name}
@@ -299,7 +386,12 @@ function Index() {
               time={ceremony.time}
               venue={ceremony.venue}
               accent={ceremony.accent}
-              image={ceremonyImages[ceremony.name as keyof typeof ceremonyImages]}
+              image={
+                ceremonyImages[
+                  ceremony.name as keyof typeof ceremonyImages
+                ]
+              }
+              forceReveal={showCeremonyDetails}
             />
           ))}
         </div>
@@ -317,8 +409,12 @@ function Index() {
               className="block w-full"
             />
             <div className="px-6 py-5 text-center">
-              <p className="script text-3xl text-primary">Where Two Souls Become One</p>
-              <p className="label mt-2 text-muted-foreground">Mandap · 18 May 2026 · 5:00 PM</p>
+              <p className="script text-3xl text-primary">
+                Where Two Souls Become One
+              </p>
+              <p className="label mt-2 text-muted-foreground">
+                Mandap · 18 May 2026 · 5:00 PM
+              </p>
             </div>
           </div>
         </div>
@@ -327,8 +423,13 @@ function Index() {
       <Section id="schedule" eyebrow="Plan Ahead" title="Wedding Day Schedule">
         <div className="space-y-3">
           {WEDDING_CONFIG.weddingDaySchedule.map((schedule, i) => (
-            <div key={i} className="paper flex items-center justify-between rounded-xl p-4">
-              <div className="serif text-lg text-primary">{schedule.item}</div>
+            <div
+              key={i}
+              className="paper flex items-center justify-between rounded-xl p-4"
+            >
+              <div className="serif text-lg text-primary">
+                {schedule.item}
+              </div>
               <div className="label text-gold">{schedule.time}</div>
             </div>
           ))}
@@ -362,7 +463,8 @@ function Index() {
         </div>
 
         <p className="script text-3xl text-primary sm:text-4xl">
-          {WEDDING_CONFIG.couple.groom.name} &amp; {WEDDING_CONFIG.couple.bride.name}
+          {WEDDING_CONFIG.couple.groom.name} &amp;{" "}
+          {WEDDING_CONFIG.couple.bride.name}
         </p>
 
         <p className="mx-auto mt-3 max-w-md serif text-base italic text-muted-foreground">
@@ -370,8 +472,12 @@ function Index() {
         </p>
 
         <div className="mt-6 space-y-1">
-          <p className="label text-muted-foreground">With love · 18 May 2026</p>
-          <p className="label text-muted-foreground">{WEDDING_CONFIG.venue.name}</p>
+          <p className="label text-muted-foreground">
+            With love · 18 May 2026
+          </p>
+          <p className="label text-muted-foreground">
+            {WEDDING_CONFIG.venue.name}
+          </p>
         </div>
       </footer>
     </main>
