@@ -6,11 +6,11 @@ import receptionImg from "../assets/images/reception.png";
 export const WEDDING_CONFIG = {
   couple: {
     groom: {
-      name: "Chinna",
+      name: "CHINNA",
       parents: "Mr. & Mrs. Sharma",
     },
     bride: {
-      name: "Vaishu",
+      name: "VAISHU",
       parents: "Mr. & Mrs. Singh",
     },
   },
