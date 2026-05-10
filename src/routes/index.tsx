@@ -178,7 +178,7 @@ function Index() {
   const [showCeremonyDetails, setShowCeremonyDetails] = useState(false);
 
   const musicRef = useRef<BackgroundMusicHandle>(null);
-  const ceremoniesRef = useRef<HTMLElement>(null);
+ const ceremoniesRef = useRef<HTMLElement | null>(null);
   const revealTimerRef = useRef<number | null>(null);
 
   const ceremonyImages = {
