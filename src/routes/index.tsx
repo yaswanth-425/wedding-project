@@ -57,7 +57,7 @@ function Section({
 }) {
   return (
     <section
-      ref={sectionRef}
+  ref={sectionRef as React.Ref<HTMLElement>}
       id={id}
       className={`mx-auto w-full max-w-2xl px-5 py-20 ${className}`}
     >
