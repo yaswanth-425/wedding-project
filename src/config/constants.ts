@@ -49,7 +49,7 @@ export const WEDDING_CONFIG = {
     {
       day: "Day 3 · Monday",
       name: "Wedding",
-      date: "May 18, 2026",
+      date: "May 19, 2026",
       time: "5:00 PM onwards",
       venue: "Mandap, The Leela Palace",
       accent: "oklch(0.55 0.12 150)",
