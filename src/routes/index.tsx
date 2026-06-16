@@ -244,18 +244,12 @@ function Index() {
         <h1 className="script text-5xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.groom.name}
         </h1>
-        <p className="label mt-2 text-muted-foreground">
-          Son of {WEDDING_CONFIG.couple.groom.parents}
-        </p>
-
+        
         <p className="script my-4 text-5xl text-gold">&amp;</p>
 
         <h1 className="script text-5xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.bride.name}
         </h1>
-        <p className="label mt-2 text-muted-foreground">
-          Daughter of {WEDDING_CONFIG.couple.bride.parents}
-        </p>
 
         <div className="mt-8 flex flex-col items-center gap-4">
           <a

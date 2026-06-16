@@ -7,11 +7,9 @@ export const WEDDING_CONFIG = {
   couple: {
     groom: {
       name: "PRIYATHAM",
-      parents: "Mr. & Mrs. MADDU",
     },
     bride: {
       name: "VASAVI",
-      parents: "Mr. & Mrs. CHAVVA",
     },
   },
 

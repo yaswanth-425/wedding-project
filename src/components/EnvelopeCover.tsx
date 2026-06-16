@@ -74,7 +74,7 @@ export function EnvelopeCover({ onOpen }: { onOpen: () => void }) {
   </p>
 
   <p className="script mt-2 text-5xl md:text-3xl text-[oklch(0.98_0.05_80)]">
-    Chavva Family
+    Chavva`s Family
   </p>
 
    
