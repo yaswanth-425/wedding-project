@@ -68,11 +68,17 @@ export function EnvelopeCover({ onOpen }: { onOpen: () => void }) {
       </svg>
 
       <div className="relative h-[78vh] w-[88vw] max-w-md">
-        <div className="absolute left-1/2 top-[18%] z-10 -translate-x-1/2 text-center">
-          <p className="script text-3xl text-[oklch(0.95_0.04_80)] drop-shadow-[0_2px_8px_oklch(0.2_0.1_25_/_0.6)]">
-            Tap to Reveal
-          </p>
-        </div>
+        <div className="absolute left-1/2 top-[8%] z-10 -translate-x-1/2 text-center">
+  <p className="text-xs md:text-sm tracking-[0.25em] uppercase text-[oklch(0.95_0.04_80)]">
+    Wedding Invitation From
+  </p>
+
+  <p className="script mt-2 text-5xl md:text-3xl text-[oklch(0.98_0.05_80)]">
+    Chavva Family
+  </p>
+
+   
+</div>
 
         <div className="absolute bottom-[14%] left-1/2 z-10 -translate-x-1/2 text-center">
           <p className="script text-2xl text-[oklch(0.95_0.04_80)] drop-shadow-[0_2px_8px_oklch(0.2_0.1_25_/_0.6)]">

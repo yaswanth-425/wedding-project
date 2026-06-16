@@ -28,26 +28,9 @@ export const WEDDING_CONFIG = {
   },
 
   ceremonies: [
+    
     {
-      day: "Day 1 · Wednesday",
-      name: "Mehendi",
-      date: "June 17, 2026",
-      time: "10:00 AM",
-      venue: "Hometown",
-      accent: "oklch(0.78 0.13 75)",
-      image: mehendiImg,
-    },
-    {
-      day: "Day 2 · Wednesday",
-      name: "Sangeet",
-      date: "June 17, 2026",
-      time: "7:00 PM",
-      venue: "Hometown",
-      accent: "oklch(0.62 0.18 25)",
-      image: sangeetImg,
-    },
-    {
-      day: "Day 3 · Monday",
+      day: "Day 1 · Friday",
       name: "Wedding",
       date: "June 19, 2026",
       time: "09:15 PM onwards",
@@ -56,7 +39,7 @@ export const WEDDING_CONFIG = {
       image: weddingImg,
     },
     {
-      day: "Day 4 · Tuesday",
+      day: "Day 2 · Sunday",
       name: "Reception",
       date: "June 21, 2026",
       time: "7:00 PM",
@@ -75,8 +58,7 @@ export const WEDDING_CONFIG = {
   ],
 
   rsvpEvents: [
-    { id: "mehendi", label: "Mehendi · June 17" },
-    { id: "sangeet", label: "Sangeet · June 17" },
+    
     { id: "wedding", label: "Wedding · June 19" },
     { id: "reception", label: "Reception · June 21" },
   ],
