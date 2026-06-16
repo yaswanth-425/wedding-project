@@ -310,7 +310,7 @@ function Index() {
             musicRef.current?.playMusic();
           }}
         >
-          <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="grid grid-cols-3 gap-4">
             {[
               { l: "Month", v: "June" },
               { l: "Day", v: "19" },
@@ -318,7 +318,7 @@ function Index() {
             ].map((d) => (
               <div key={d.l}>
                 <p className="label text-muted-foreground">{d.l}</p>
-                <p className="script text-5xl text-primary sm:text-6xl">
+                <p className="script text-4xl text-primary sm:text-6xl">
                   {d.v}
                 </p>
               </div>
