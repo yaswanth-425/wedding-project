@@ -57,7 +57,7 @@ export function VenueMap({
   return (
     <div className="paper rounded-2xl p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="script text-[14px] text-primary">{venueName}</h3>
+        <h3 className="script text-[10px] text-primary">{venueName}</h3>
         <div className="flex gap-2">
           <button
             onClick={openInMaps}

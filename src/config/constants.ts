@@ -15,9 +15,9 @@ export const WEDDING_CONFIG = {
     },
   },
 
-  weddingDate: new Date("2026-05-18T17:00:00"),
-  weddingDateISO: "2026-05-18T17:00:00",
-  rsvpDeadline: "May 1, 2026",
+  weddingDate: new Date("2026-06-19T17:00:00"),
+  weddingDateISO: "2026-06-19T17:00:00",
+  rsvpDeadline: "June 22, 2026",
 
   venue: {
     name: "Mandap, T.V.A Chinna Rajanna Arya vysya",

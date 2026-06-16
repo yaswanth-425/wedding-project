@@ -237,11 +237,11 @@ function Index() {
         </p>
         
 
-        <div className="divider my-10">
+        <div className="divider my-9">
           <span className="flourish">❦</span>
         </div>
 
-        <h1 className="script text-6xl text-primary sm:text-8xl">
+        <h1 className="script text-5xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.groom.name}
         </h1>
         <p className="label mt-2 text-muted-foreground">
@@ -250,7 +250,7 @@ function Index() {
 
         <p className="script my-4 text-5xl text-gold">&amp;</p>
 
-        <h1 className="script text-6xl text-primary sm:text-8xl">
+        <h1 className="script text-5xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.bride.name}
         </h1>
         <p className="label mt-2 text-muted-foreground">
@@ -310,7 +310,7 @@ function Index() {
             musicRef.current?.playMusic();
           }}
         >
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-5">
             {[
               { l: "Month", v: "June" },
               { l: "Day", v: "19" },
