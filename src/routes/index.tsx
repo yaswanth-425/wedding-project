@@ -318,7 +318,7 @@ function Index() {
             ].map((d) => (
               <div key={d.l}>
                 <p className="label text-muted-foreground">{d.l}</p>
-                <p className="script text-4xl text-primary sm:text-6xl">
+                <p className="script text-4xl text-primary sm:text-4xl">
                   {d.v}
                 </p>
               </div>
