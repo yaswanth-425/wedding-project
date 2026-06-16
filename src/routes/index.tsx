@@ -310,7 +310,7 @@ function Index() {
             musicRef.current?.playMusic();
           }}
         >
-          <div className="grid grid-cols-3 gap-3 text-start">
+          <div className="grid grid-cols-3 gap-3 text-center">
             {[
               { l: "Month", v: "June" },
               { l: "Day", v: "19" },
