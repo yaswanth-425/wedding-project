@@ -57,7 +57,7 @@ export function VenueMap({
   return (
     <div className="paper rounded-2xl p-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="script text-2xl text-primary">{venueName}</h3>
+        <h3 className="script text-[14px] text-primary">{venueName}</h3>
         <div className="flex gap-2">
           <button
             onClick={openInMaps}
@@ -143,7 +143,7 @@ export function VenueMap({
       <div className="border-t border-border pt-4">
         <p className="label text-muted-foreground mb-2">Getting There</p>
         <div className="space-y-1 text-sm">
-          <p className="serif text-muted-foreground">🚇 Nearest Metro: {WEDDING_CONFIG.transportation.metro}</p>
+          <p className="serif text-muted-foreground">🚇 Nearest BusStand: {WEDDING_CONFIG.transportation.metro}</p>
           <p className="serif text-muted-foreground">🚖 Taxi/Ride: {WEDDING_CONFIG.transportation.taxi}</p>
           <p className="serif text-muted-foreground">🚗 Parking: {WEDDING_CONFIG.transportation.parking}</p>
         </div>

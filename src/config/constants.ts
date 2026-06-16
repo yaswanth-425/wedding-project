@@ -6,12 +6,12 @@ import receptionImg from "../assets/images/reception.png";
 export const WEDDING_CONFIG = {
   couple: {
     groom: {
-      name: "CHINNA",
-      parents: "Mr. & Mrs. Sharma",
+      name: "PRIYATHAM",
+      parents: "Mr. & Mrs. MADDU",
     },
     bride: {
-      name: "VAISHU",
-      parents: "Mr. & Mrs. Singh",
+      name: "VASAVI",
+      parents: "Mr. & Mrs. CHAVVA",
     },
   },
 
@@ -20,65 +20,65 @@ export const WEDDING_CONFIG = {
   rsvpDeadline: "May 1, 2026",
 
   venue: {
-    name: "The Leela Palace",
-    address: "Punjagutta, Hyderabad - 500082",
-    latitude: 17.4065,
-    longitude: 78.4772,
-    area: "Punjagutta, Hyderabad",
+    name: "Mandap, T.V.A Chinna Rajanna Arya vysya",
+    address: "Kothuru, Kamavarapu Kota - 534449",
+    latitude: 17.012809336490204,
+    longitude: 81.20487668693482,
+    area: "Kothuru, Kamavarapu Kota",
   },
 
   ceremonies: [
     {
-      day: "Day 1 · Saturday",
+      day: "Day 1 · Wednesday",
       name: "Mehendi",
-      date: "May 16, 2026",
-      time: "11:00 AM",
-      venue: "Lawn, The Leela Palace",
+      date: "June 17, 2026",
+      time: "10:00 AM",
+      venue: "Hometown",
       accent: "oklch(0.78 0.13 75)",
       image: mehendiImg,
     },
     {
-      day: "Day 2 · Sunday",
+      day: "Day 2 · Wednesday",
       name: "Sangeet",
-      date: "May 17, 2026",
+      date: "June 17, 2026",
       time: "7:00 PM",
-      venue: "Grand Ballroom, The Leela Palace",
+      venue: "Hometown",
       accent: "oklch(0.62 0.18 25)",
       image: sangeetImg,
     },
     {
       day: "Day 3 · Monday",
       name: "Wedding",
-      date: "May 19, 2026",
-      time: "5:00 PM onwards",
-      venue: "Mandap, The Leela Palace",
+      date: "June 19, 2026",
+      time: "09:15 PM onwards",
+      venue: "Mandap, T.V.A Chinna Rajanna Arya vysya",
       accent: "oklch(0.55 0.12 150)",
       image: weddingImg,
     },
     {
       day: "Day 4 · Tuesday",
       name: "Reception",
-      date: "May 19, 2026",
-      time: "8:00 PM",
-      venue: "Sky Terrace, The Leela Palace",
+      date: "June 21, 2026",
+      time: "7:00 PM",
+      venue: "Dandamudi AC Kalyana Mandapam Karatam Y Juntion Narsannapalem",
       accent: "oklch(0.72 0.14 70)",
       image: receptionImg,
     },
   ],
 
   weddingDaySchedule: [
-    { time: "10:00 AM", item: "Haldi Ceremony" },
+    { time: "10:00 AM", item: "Ceremony" },
     { time: "12:00 PM", item: "Lunch" },
-    { time: "3:00 PM", item: "Baraat Welcome" },
-    { time: "5:00 PM", item: "Wedding Pheras" },
-    { time: "8:00 PM", item: "Dinner & Music" },
+    { time: "5:00 PM", item: "Baraat Welcome" },
+    { time: "7:00 PM", item: "Wedding Pheras" },
+    { time: "7:00 PM", item: "Dinner & Music" },
   ],
 
   rsvpEvents: [
-    { id: "mehendi", label: "Mehendi · May 16" },
-    { id: "sangeet", label: "Sangeet · May 17" },
-    { id: "wedding", label: "Wedding · May 18" },
-    { id: "reception", label: "Reception · May 19" },
+    { id: "mehendi", label: "Mehendi · June 17" },
+    { id: "sangeet", label: "Sangeet · June 17" },
+    { id: "wedding", label: "Wedding · June 19" },
+    { id: "reception", label: "Reception · June 21" },
   ],
 
   validation: {
@@ -105,8 +105,8 @@ export const WEDDING_CONFIG = {
   },
 
   transportation: {
-    metro: "Race Course Road (Yellow Line)",
-    taxi: "30 mins from Airport",
+    metro: "Kamavarapu Kota Bus Stand ",
+    taxi: "10 mins from Bus Stand",
     parking: "Valet available",
   },
 } as const;

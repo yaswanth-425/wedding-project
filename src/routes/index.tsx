@@ -232,16 +232,16 @@ function Index() {
           <img src={ganeshImg} alt="ganesh icon" className="icon" />
         </div>
 
-        <p className="serif mt-6 max-w-md text-lg italic text-muted-foreground">
+        <p className="serif mt-5 max-w-md text-lg italic text-muted-foreground">
           "They alone are called husband and wife, who have one soul in two bodies."
         </p>
-        <p className="label mt-2 text-muted-foreground">— Guru Amar Das Ji</p>
+        
 
         <div className="divider my-10">
           <span className="flourish">❦</span>
         </div>
 
-        <h1 className="script text-7xl text-primary sm:text-8xl">
+        <h1 className="script text-6xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.groom.name}
         </h1>
         <p className="label mt-2 text-muted-foreground">
@@ -250,7 +250,7 @@ function Index() {
 
         <p className="script my-4 text-5xl text-gold">&amp;</p>
 
-        <h1 className="script text-7xl text-primary sm:text-8xl">
+        <h1 className="script text-6xl text-primary sm:text-8xl">
           {WEDDING_CONFIG.couple.bride.name}
         </h1>
         <p className="label mt-2 text-muted-foreground">
@@ -312,8 +312,8 @@ function Index() {
         >
           <div className="grid grid-cols-3 gap-4">
             {[
-              { l: "Month", v: "May" },
-              { l: "Day", v: "18" },
+              { l: "Month", v: "June" },
+              { l: "Day", v: "19" },
               { l: "Year", v: "2026" },
             ].map((d) => (
               <div key={d.l}>
@@ -324,7 +324,7 @@ function Index() {
               </div>
             ))}
           </div>
-          <p className="label mt-6 text-muted-foreground">Monday · Evening</p>
+          <p className="label mt-6 text-muted-foreground">Friday · Evening</p>
         </DateScratchCard>
 
         <div className="mt-10">
@@ -413,7 +413,7 @@ function Index() {
                 Where Two Souls Become One
               </p>
               <p className="label mt-2 text-muted-foreground">
-                Mandap · 18 May 2026 · 5:00 PM
+                Mandap · 19 June 2026 · 09:15 PM
               </p>
             </div>
           </div>
@@ -473,7 +473,7 @@ function Index() {
 
         <div className="mt-6 space-y-1">
           <p className="label text-muted-foreground">
-            With love · 18 May 2026
+            With love · 19 June 2026
           </p>
           <p className="label text-muted-foreground">
             {WEDDING_CONFIG.venue.name}

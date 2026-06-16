@@ -93,7 +93,7 @@ export function EnvelopeCover({ onOpen }: { onOpen: () => void }) {
         >
           <div className="wax-seal float">
             <span className="relative">
-              C<span className="align-super text-2xl opacity-70">❤️</span>V
+              P<span className="align-super text-2xl opacity-70">❤️</span>V
             </span>
           </div>
         </button>
