@@ -77,7 +77,7 @@ export const WEDDING_CONFIG = {
 
   ui: {
     swiper: {
-      autoplayDelay: 5000,
+      autoplayDelay: 900,
       speed: 900,
     },
     scratchThreshold: 5,

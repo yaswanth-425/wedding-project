@@ -9,7 +9,7 @@ import {
   type BackgroundMusicHandle,
 } from "@/components/BackgroundMusic";
 import { VenueMap } from "@/components/VenueMap";
-import { RSVP } from "@/components/RSVP";
+// import { RSVP } from "@/components/RSVP";
 import { MultiCountdownScratch } from "@/components/MultiCountdownScratch";
 import { DateScratchCard } from "@/components/DateScratchCard";
 import { WEDDING_CONFIG } from "@/config/constants";
@@ -442,12 +442,7 @@ function Index() {
         />
       </Section>
 
-      <Section id="rsvp" eyebrow="Your Presence Matters" title="RSVP">
-        <p className="mb-6 text-center text-muted-foreground">
-          Kindly respond by {WEDDING_CONFIG.rsvpDeadline}
-        </p>
-        <RSVP />
-      </Section>
+      
 
       <footer className="px-6 pb-10 pt-6 text-center">
         <div className="mb-4 flex items-center justify-center gap-3 text-gold">
